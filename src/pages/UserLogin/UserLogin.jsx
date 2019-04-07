@@ -8,6 +8,8 @@ import {
   FormError as IceFormError
 } from "@icedesign/form-binder";
 import IceIcon from "@icedesign/foundation-symbol";
+import { ComStr } from "../../Config/ComStr";
+import axios from "axios";
 
 const { Row, Col } = Grid;
 
@@ -23,9 +25,8 @@ class UserLogin extends Component {
     super(props);
     this.state = {
       value: {
-        username: "",
-        password: "",
-        checkbox: false
+        email: "",
+        password: ""
       }
     };
   }
@@ -44,14 +45,22 @@ class UserLogin extends Component {
         console.log("errors", errors);
         return;
       }
-      //验证完成，TODO 此处应当向后台发起表单请求
-
-      //此处代码
-
-      console.log(values);
-      Message.success("登录成功！");
-      //页面跳转
-      this.props.history.push("/");
+      fetch(ComStr.baseBackendApiUrl + "/loginxxx", {
+        method: "POST",
+        credentials: "include",
+        body: values
+      })
+        .then(res => res.json())
+        .then(data => {
+          //此处data为json格式返回信息，一些列判断之类的操作~
+          if (true) {
+            //假设判断完成登录非常成功
+            Message.success("登录成功！");
+            //页面跳转
+            this.props.history.push("/");
+          }
+        })
+        .catch(e => Message.error("请求错误：" + e));
     });
   };
 
@@ -68,7 +77,7 @@ class UserLogin extends Component {
             <Row className="formItem">
               <Col className="formItemCol">
                 <IceIcon type="person" size="small" className="inputIcon" />
-                <IceFormBinder name="username" required message="必填">
+                <IceFormBinder name="email" required message="必填">
                   <Input
                     className="next-input-single"
                     size="large"
@@ -78,7 +87,7 @@ class UserLogin extends Component {
                 </IceFormBinder>
               </Col>
               <Col>
-                <IceFormError name="username" />
+                <IceFormError name="email" />
               </Col>
             </Row>
 
@@ -109,7 +118,7 @@ class UserLogin extends Component {
             </Row>
 
             <Row className="tips">
-              <Link to="#" className="tips-text">
+              <Link to="/user/register" className="tips-text">
                 立即注册
               </Link>
             </Row>

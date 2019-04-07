@@ -1,19 +1,19 @@
 /* eslint react/no-string-refs:0 */
-import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { Input, Button, Grid, Message } from '@alifd/next';
+import React, { Component } from "react";
+import { withRouter, Link } from "react-router-dom";
+import { Input, Button, Grid, Message } from "@alifd/next";
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
-import IceIcon from '@icedesign/foundation-symbol';
+  FormError as IceFormError
+} from "@icedesign/form-binder";
+import IceIcon from "@icedesign/foundation-symbol";
 
 const { Row, Col } = Grid;
 
 @withRouter
 class UserRegister extends Component {
-  static displayName = 'UserRegister';
+  static displayName = "UserRegister";
 
   static propTypes = {};
 
@@ -23,21 +23,21 @@ class UserRegister extends Component {
     super(props);
     this.state = {
       value: {
-        name: '',
-        email: '',
-        passwd: '',
-        rePasswd: '',
-      },
+        email: "",
+        verifycode: "",
+        passwd: "",
+        rePasswd: ""
+      }
     };
   }
 
   checkPasswd = (rule, values, callback) => {
     if (!values) {
-      callback('请输入正确的密码');
+      callback("请输入正确的密码");
     } else if (values.length < 8) {
-      callback('密码必须大于8位');
+      callback("密码必须大于8位");
     } else if (values.length > 16) {
-      callback('密码必须小于16位');
+      callback("密码必须小于16位");
     } else {
       callback();
     }
@@ -45,29 +45,29 @@ class UserRegister extends Component {
 
   checkPasswd2 = (rule, values, callback, stateValues) => {
     if (!values) {
-      callback('请输入正确的密码');
+      callback("请输入正确的密码");
     } else if (values && values !== stateValues.passwd) {
-      callback('两次输入密码不一致');
+      callback("两次输入密码不一致");
     } else {
       callback();
     }
   };
 
-  formChange = (value) => {
+  formChange = value => {
     this.setState({
-      value,
+      value
     });
   };
 
   handleSubmit = () => {
     this.refs.form.validateAll((errors, values) => {
       if (errors) {
-        console.log('errors', errors);
+        console.log("errors", errors);
         return;
       }
       console.log(values);
-      Message.success('注册成功');
-      this.props.history.push('/user/login');
+      Message.success("注册成功");
+      this.props.history.push("/user/login");
     });
   };
 
@@ -90,7 +90,11 @@ class UserRegister extends Component {
                     required
                     message="请输入正确的用户名"
                   >
-                    <Input className="next-input-single" size="large" placeholder="用户名" />
+                    <Input
+                      className="next-input-single"
+                      size="large"
+                      placeholder="用户名"
+                    />
                   </IceFormBinder>
                 </Col>
                 <Col>
@@ -107,7 +111,12 @@ class UserRegister extends Component {
                     required
                     message="请输入正确的邮箱"
                   >
-                    <Input className="next-input-single" size="large" maxLength={20} placeholder="邮箱" />
+                    <Input
+                      className="next-input-single"
+                      size="large"
+                      maxLength={20}
+                      placeholder="邮箱"
+                    />
                   </IceFormBinder>
                 </Col>
                 <Col>
@@ -123,7 +132,8 @@ class UserRegister extends Component {
                     required
                     validator={this.checkPasswd}
                   >
-                    <Input className="next-input-single"
+                    <Input
+                      className="next-input-single"
                       htmlType="password"
                       size="large"
                       placeholder="至少8位密码"
@@ -150,7 +160,8 @@ class UserRegister extends Component {
                       )
                     }
                   >
-                    <Input className="next-input-single"
+                    <Input
+                      className="next-input-single"
                       htmlType="password"
                       size="large"
                       placeholder="确认密码"
